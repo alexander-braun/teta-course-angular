@@ -1,20 +1,26 @@
 <nav aria-label="Page navigation example">
   <ul class="pagination">
-    <li class="page-item" [ngClass]="{ disabled: currentPage === 0 }">
-      <a class="page-link" href="#" (click)="nextPage()">Previous</a>
+    <li class="page-item" [appClass]="{ disabled: currentPage === 0 }">
+      <a style="cursor: pointer" class="page-link" (click)="nextPage()"
+        >Previous</a
+      >
     </li>
+    <ng-container *appTimes="images.length; let i = index">
+      <li
+        [appClass]="{ active: i === currentPage }"
+        class="page-item"
+        *ngIf="checkWindowIndex(i)"
+      >
+        <a class="page-link" (click)="switchPage(i)">{{ i + 1 }}</a>
+      </li>
+    </ng-container>
     <li
-      *ngFor="let image of images; let i = index"
-      [ngClass]="{ active: i === currentPage }"
       class="page-item"
+      [appClass]="{ disabled: currentPage === images.length - 1 }"
     >
-      <a class="page-link" href="#" (click)="switchPage(i)">{{ i + 1 }}</a>
-    </li>
-    <li
-      class="page-item"
-      [ngClass]="{ disabled: currentPage === images.length - 1 }"
-    >
-      <a class="page-link" href="#" (click)="previousPage()">Next</a>
+      <a style="cursor: pointer" class="page-link" (click)="previousPage()"
+        >Next</a
+      >
     </li>
   </ul>
 </nav>
@@ -22,4 +28,11 @@
 <div>
   <h4>{{ images[currentPage].title }}</h4>
   <img [src]="images[currentPage].url" />
+</div>
+
+<div [ngSwitch]="currentPage">
+  <div *ngSwitchCase="0">Current Page = 0</div>
+  <div *ngSwitchCase="1">Current Page = 1</div>
+  <div *ngSwitchCase="2">Current Page = 2</div>
+  <div *ngSwitchDefault>Default Case</div>
 </div>
