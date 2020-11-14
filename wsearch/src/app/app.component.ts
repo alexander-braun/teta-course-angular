@@ -13,7 +13,7 @@ export class AppComponent {
 
   setTerm(term: string): void {
     this.wikipediaService.search(term).subscribe((response) => {
-      this.pages = response.query.search;
+      this.pages = response;
     });
   }
 }

@@ -1,7 +1,17 @@
-import { query } from '@angular/animations';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { pluck } from 'rxjs/operators';
+
+interface WikipediaResponse {
+  query: {
+    search: {
+      title: string;
+      snippet: string;
+      pageid: number;
+    }[];
+  };
+}
 
 @Injectable({
   providedIn: 'root',
@@ -9,16 +19,26 @@ import { Observable } from 'rxjs';
 export class WikipediaService {
   constructor(private httpClient: HttpClient) {}
 
-  search(term: string): Observable<any> {
-    return this.httpClient.get(`https://en.wikipedia.org/w/api.php`, {
-      params: {
-        action: 'query',
-        format: 'json',
-        list: 'search',
-        utf8: '1',
-        srsearch: term,
-        origin: '*',
-      },
-    });
+  search(
+    term: string
+  ): Observable<
+    {
+      title: string;
+      snippet: string;
+      pageid: number;
+    }[]
+  > {
+    return this.httpClient
+      .get<WikipediaResponse>(`https://en.wikipedia.org/w/api.php`, {
+        params: {
+          action: 'query',
+          format: 'json',
+          list: 'search',
+          utf8: '1',
+          srsearch: term,
+          origin: '*',
+        },
+      })
+      .pipe(pluck('query', 'search'));
   }
 }
