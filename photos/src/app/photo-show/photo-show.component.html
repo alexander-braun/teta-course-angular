@@ -1,0 +1,5 @@
+<div>
+  <button (click)="getNewRandomPhoto()">Get New Photo</button>
+</div>
+
+<img *ngIf="currentPhoto" [src]="currentPhoto" />
