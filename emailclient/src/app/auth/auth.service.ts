@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 
 interface SignupCredentials {
   username: string;
@@ -55,5 +55,13 @@ export class AuthService {
           this.signedIn$.next(val.authenticated);
         })
       );
+  }
+
+  signout(): Observable<{}> {
+    return this.httpClient.post(this.rootUrl + 'signout', {}).pipe(
+      tap(() => {
+        this.signedIn$.next(false);
+      })
+    );
   }
 }
