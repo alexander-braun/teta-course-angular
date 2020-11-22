@@ -24,6 +24,8 @@
     "
   >
     <p *ngIf="authForm.errors.passwordsDontMatch">Passwords don't match</p>
+    <p *ngIf="authForm.errors.noConnection">No Internet access</p>
+    <p *ngIf="authForm.errors.unknownError">Unknown Error</p>
   </div>
   <div>
     <button class="ui submit button primary">Submit</button>
