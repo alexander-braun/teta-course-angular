@@ -32,4 +32,8 @@ export class EmailService {
   getEmail(id: string): Observable<Email> {
     return this.httpClient.get<Email>(this.rootUrl + '/emails/' + id);
   }
+
+  sendEmail(email: Email): Observable<Email> {
+    return this.httpClient.post<Email>(`${this.rootUrl}/emails`, email);
+  }
 }
