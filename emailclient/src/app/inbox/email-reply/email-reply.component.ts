@@ -1,18 +1,18 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Email } from '../email.service';
+import { Component, Input, OnChanges } from '@angular/core';
+import { Email, EmailService } from '../email.service';
 
 @Component({
   selector: 'app-email-reply',
   templateUrl: './email-reply.component.html',
   styleUrls: ['./email-reply.component.css'],
 })
-export class EmailReplyComponent implements OnInit {
+export class EmailReplyComponent implements OnChanges {
   showModal = false;
   @Input() email: Email;
 
-  constructor() {}
+  constructor(private emailService: EmailService) {}
 
-  ngOnInit(): void {
+  ngOnChanges(): void {
     this.email = {
       ...this.email,
       from: this.email.to,
@@ -24,5 +24,9 @@ export class EmailReplyComponent implements OnInit {
     };
   }
 
-  onSubmit(email: Email): void {}
+  onSubmit(email: Email): void {
+    this.emailService.sendEmail(email).subscribe(() => {
+      this.showModal = false;
+    });
+  }
 }
